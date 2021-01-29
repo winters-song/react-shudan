@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import Goban from './shudan/Goban'
 import './css/goban.css'
 
@@ -60,15 +60,21 @@ function App() {
 
   const [board, setBoard] = useState(new Board(signMap))
 
+  const boardRef = useRef(board)
+  
   let showCorner = false
   let showLines = false
   let isBusy = false
 
   const handleMouseUp = (evt, [x, y]) => {
     let sign = evt.button === 0 ? 1 : -1
-    let newBoard = board.makeMove(sign, [x, y])
+    let newBoard = boardRef.current.makeMove(sign, [x, y])
     setBoard(newBoard)
   };
+
+  useEffect(()=> {
+    boardRef.current = board
+  }, [board]);
  
   return (
     <>
