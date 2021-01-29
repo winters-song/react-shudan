@@ -1451,6 +1451,11 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@sabaki/go-board@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.npm.taobao.org/@sabaki/go-board/download/@sabaki/go-board-1.4.2.tgz#d18737490f800054e3b52b5ee2f5cacca88ba15e"
+  integrity sha1-0Yc3SQ+AAFTjtSte4vXKzKiLoV4=
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.1.tgz#e7df00f98a203324f6dc7cc606cad9d4a8ab2217"
@@ -3179,6 +3184,11 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+classnames@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.npm.taobao.org/classnames/download/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
+  integrity sha1-Q5Nb/90pHzJtrQogUwmzjQD2UM4=
 
 clean-css@^4.2.3:
   version "4.2.3"
