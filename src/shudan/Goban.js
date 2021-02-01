@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 
 import CoordX from './CoordX'
 import CoordY from './CoordY'
 import Grid from './Grid'
 import Vertex from './Vertex'
+import Line from './Line'
 
 import helper from './helper'
 const classnames = require('classnames') 
 
-// const Line = require('./Line')
 
 function Goban(props) {
   let {
@@ -24,6 +24,7 @@ function Goban(props) {
     heatMap,
     markerMap,
     ghostStoneMap,
+    animateStonePlacement = false,
     fuzzyStonePlacement = false,
     showCoordinates = true,
     lines = [],
@@ -32,18 +33,47 @@ function Goban(props) {
   } = props
 
   // 宽高从signMap读取
-  const [width, setWidth] = useState(signMap.length === 0 ? 0 : signMap[0].length)
-  const [height, setHeight] = useState(signMap.length)
+  let width = signMap.length === 0 ? 0 : signMap[0].length
+  let height = signMap.length
+
   // 坐标数组
-  const [xs, setXs] = useState(helper.range(width).slice(rangeX[0], rangeX[1] + 1))
-  const [ys, setYs] = useState(helper.range(height).slice(rangeY[0], rangeY[1] + 1))
+  let xs = helper.range(width).slice(rangeX[0], rangeX[1] + 1)
+  let ys = helper.range(height).slice(rangeY[0], rangeY[1] + 1)
+
   // 星位
-  const [hoshis, setHoshis] = useState(helper.getHoshis(width, height))
+  let hoshis = helper.getHoshis(width, height)
+
+  // 不规则棋子位置
   const [shiftMap, setShiftMap] = useState(helper.readjustShifts(
     signMap.map(row => row.map(_ => helper.random(8)))
   ))
-  const [randomMap, setRandomMap] = useState(signMap.map(row => row.map(_ => helper.random(4))))
-  // const [animatedVertices, setAnimatedVertices] = useState([])
+
+  let randomMap = signMap.map(row => row.map(_ => helper.random(4)))
+
+  const [clearAnimatedVertices, setClearAnimatedVertices] = useState()
+  const [animatedVertices, setAnimatedVertices] = useState([])
+
+  const signMapRef = useRef(signMap)
+
+  // 落子动画
+  useEffect(() => {
+    let diff = helper.diffSignMap(signMapRef.current, signMap)
+
+    if ( animateStonePlacement && !clearAnimatedVertices && diff.length > 0 ) {
+      signMapRef.current = signMap
+      setAnimatedVertices(diff)
+      for (let [x, y] of diff) {
+        shiftMap[y][x] = helper.random(7) + 1
+        helper.readjustShifts(shiftMap, [x, y])
+      }
+      setShiftMap(shiftMap)
+
+      setClearAnimatedVertices(setTimeout(() => {
+        setAnimatedVertices([])
+        setClearAnimatedVertices(null)
+      }, 200))
+    }
+  }, [signMap])
 
   return (
     <div 
@@ -116,6 +146,7 @@ function Goban(props) {
                     marker={markerMap && markerMap[y] && markerMap[y][x]}
                     ghostStone={ghostStoneMap && ghostStoneMap[y] && ghostStoneMap[y][x]}
                     dimmed={dimmedVertices.some(equalsVertex)}
+                    animate= {animatedVertices.some(equalsVertex)}
                     selected={selected}
                     selectedLeft={selected && selectedVertices.some(v =>
                       helper.vertexEquals(v, [x - 1, y])
@@ -136,6 +167,31 @@ function Goban(props) {
               })
             )
           }
+
+          <div className='shudan-lines' style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            overflow: 'hidden',
+            pointerEvents: 'none',
+            zIndex: 2
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: `-${rangeY[0]}em`,
+              left: `-${rangeX[0]}em`,
+              width: `${width}em`,
+              height: `${height}em`
+            }}>
+              {
+                lines.map(({v1, v2, type}, i) => {
+                  return (<Line key={i} v1={v1} v2={v2} type={type} vertexSize={vertexSize} />)
+                })
+              }
+            </div>
+          </div>
         </div>
       </div>
 

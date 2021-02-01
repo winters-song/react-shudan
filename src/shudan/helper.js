@@ -51,6 +51,7 @@ exports.getHoshis = function(width, height) {
   return result
 }
 
+// 不规则棋子位置
 exports.readjustShifts = function(shiftMap, vertex = null) {
   if (vertex == null) {
     for (let y = 0; y < shiftMap.length; y++) {

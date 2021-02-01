@@ -34,7 +34,7 @@ function Vertex (props) {
 
   let markerMarkup = z =>
     !!marker && (
-      <div className='shudan-marker' title={marker.label} style={absoluteStyle(z)}/>
+      <div className='shudan-marker' title={marker.label} style={absoluteStyle(z)} ></div>
     )
 
   let handlers = {}
@@ -105,6 +105,23 @@ function Vertex (props) {
         )}
         {!!sign && markerMarkup() }
       </div>
+      {!!paint && (
+        <div key='paint' className="shudan-paint" style={{
+          ...absoluteStyle(3),
+          opacity: Math.abs(paint || 0) * 0.5
+        }}></div>
+      )} 
+
+      {!!selected && (
+        <div key='selection' className="shudan-selection" style={absoluteStyle(4)}></div>
+      )} 
+
+      <div key="heat" className="shudan-heat" style={absoluteStyle(5)}></div>
+      {!!heat && (
+        <div key='heatlabel' className="shudan-heatlabel" style={absoluteStyle(6)}>
+          {heat.text && heat.text.toString()}
+        </div>
+      )} 
     </div>
   )
 }
