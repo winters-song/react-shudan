@@ -55,7 +55,7 @@ function Grid (props) {
           hoshis.map(([x, y]) => {
             let i = xs.indexOf(x)
             let j = ys.indexOf(y)
-            if (i < 0 || j < 0) return
+            if (i < 0 || j < 0) return ""
 
             return (
               <circle key={[x, y].join('-')} className='shudan-hoshi'

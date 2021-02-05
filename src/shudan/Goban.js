@@ -6,13 +6,13 @@ import Grid from './Grid'
 import Vertex from './Vertex'
 import Line from './Line'
 
-import helper from './helper'
+// import helper from './helper'
+const { range, getHoshis, readjustShifts, random, diffSignMap, vertexEquals} = require('./helper') 
 const classnames = require('classnames') 
 
 
 function Goban(props) {
   let {
-    innerProps = {},
     vertexSize = 24,
     coordX,
     coordY,
@@ -37,18 +37,18 @@ function Goban(props) {
   let height = signMap.length
 
   // 坐标数组
-  let xs = helper.range(width).slice(rangeX[0], rangeX[1] + 1)
-  let ys = helper.range(height).slice(rangeY[0], rangeY[1] + 1)
+  let xs = range(width).slice(rangeX[0], rangeX[1] + 1)
+  let ys = range(height).slice(rangeY[0], rangeY[1] + 1)
 
   // 星位
-  let hoshis = helper.getHoshis(width, height)
+  let hoshis = getHoshis(width, height)
 
   // 不规则棋子位置
-  const [shiftMap, setShiftMap] = useState(helper.readjustShifts(
-    signMap.map(row => row.map(_ => helper.random(8)))
+  const [shiftMap, setShiftMap] = useState(readjustShifts(
+    signMap.map(row => row.map(_ => random(8)))
   ))
 
-  let randomMap = signMap.map(row => row.map(_ => helper.random(4)))
+  let randomMap = signMap.map(row => row.map(_ => random(4)))
 
   const [clearAnimatedVertices, setClearAnimatedVertices] = useState()
   const [animatedVertices, setAnimatedVertices] = useState([])
@@ -57,14 +57,14 @@ function Goban(props) {
 
   // 落子动画
   useEffect(() => {
-    let diff = helper.diffSignMap(signMapRef.current, signMap)
+    let diff = diffSignMap(signMapRef.current, signMap)
 
     if ( animateStonePlacement && !clearAnimatedVertices && diff.length > 0 ) {
       signMapRef.current = signMap
       setAnimatedVertices(diff)
       for (let [x, y] of diff) {
-        shiftMap[y][x] = helper.random(7) + 1
-        helper.readjustShifts(shiftMap, [x, y])
+        shiftMap[y][x] = random(7) + 1
+        readjustShifts(shiftMap, [x, y])
       }
       setShiftMap(shiftMap)
 
@@ -131,7 +131,7 @@ function Goban(props) {
           { 
             ys.map(y =>
               xs.map(x => {
-                let equalsVertex = v => helper.vertexEquals(v, [x, y])
+                let equalsVertex = v => vertexEquals(v, [x, y])
                 let selected = selectedVertices.some(equalsVertex)
 
                 return (
@@ -149,16 +149,16 @@ function Goban(props) {
                     animate= {animatedVertices.some(equalsVertex)}
                     selected={selected}
                     selectedLeft={selected && selectedVertices.some(v =>
-                      helper.vertexEquals(v, [x - 1, y])
+                      vertexEquals(v, [x - 1, y])
                     )}
                     selectedRight={selected && selectedVertices.some(v =>
-                      helper.vertexEquals(v, [x + 1, y])
+                      vertexEquals(v, [x + 1, y])
                     )}
                     selectedTop={selected && selectedVertices.some(v =>
-                      helper.vertexEquals(v, [x, y - 1])
+                      vertexEquals(v, [x, y - 1])
                     )}
                     selectedBottom={selected && selectedVertices.some(v =>
-                      helper.vertexEquals(v, [x, y + 1])
+                      vertexEquals(v, [x, y + 1])
                     )}
 
                     onMouseUp={props.onVertexMouseUp}
