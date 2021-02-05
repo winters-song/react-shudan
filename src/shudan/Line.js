@@ -1,0 +1,35 @@
+import React from 'react'
+const {vertexEquals} = require('./helper')
+
+function Line (props) {
+  let {v1, v2, type = 'line', vertexSize} = props
+  if (vertexEquals(v1, v2)) return
+
+  let [pos1, pos2] = [v1, v2].map(v => v.map(x => x * vertexSize))
+  let [dx, dy] = pos1.map((x, i) => pos2[i] - x)
+  let [left, top] = pos1.map((x, i) => (x + pos2[i] + vertexSize) / 2)
+
+  let angle = (Math.atan2(dy, dx) * 180) / Math.PI
+  let length = Math.sqrt(dx * dx + dy * dy)
+
+  return (
+    <div className={`shudan-${type}`} style={{
+      position: 'absolute',
+      left,
+      top,
+      margin: 0,
+      width: length,
+      transform: `translateX(${-length / 2}px) rotate(${angle}deg)`
+    }}></div>
+  )
+}
+
+
+export default React.memo(Line, (prevProps, nextProps) => {
+  return (
+    prevProps.type === nextProps.type &&
+    prevProps.vertexSize === nextProps.vertexSize &&
+    prevProps.v1 === nextProps.v1 &&
+    prevProps.v2 === nextProps.v2
+  )
+})
