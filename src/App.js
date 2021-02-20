@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react'
-import Goban from './shudan/Goban'
+import Goban from './Goban'
+// import BoundedGoban from './shudan/BoundedGoban'
 import './css/goban.css'
 import './App.css'
 

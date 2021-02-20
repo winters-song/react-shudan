@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from 'react'
+import React, { useState, useEffect, useRef, forwardRef } from 'react'
 
 import CoordX from './CoordX'
 import CoordY from './CoordY'
@@ -7,10 +7,10 @@ import Vertex from './Vertex'
 import Line from './Line'
 
 import helper from './helper'
-const classnames = require('classnames') 
+import classnames from 'classnames'
 
 
-function Goban(props) {
+function Goban(props, ref) {
   let {
     innerProps = {},
     vertexSize = 24,
@@ -76,7 +76,7 @@ function Goban(props) {
   }, [signMap])
 
   return (
-    <div 
+    <div ref={ref}
       className={classnames('shudan-goban', 'shudan-goban-image', {
         'shudan-busy': busy,
         'shudan-coordinates': showCoordinates
@@ -208,4 +208,4 @@ function Goban(props) {
 }
 
 
-export default React.memo(Goban) 
+export default React.memo(forwardRef(Goban)) 

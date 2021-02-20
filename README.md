@@ -23,3 +23,9 @@ $ npm install
 ```shell
 $ yarn start
 ```
+
+作为第三方引入：
+```shell
+yarn add https://github.com/winters-song/react-shudan.git
+yarn add @sabaki/go-board
+```
