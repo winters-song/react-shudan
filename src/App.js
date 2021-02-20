@@ -28,7 +28,6 @@ const chineseCoord = [
   '十九'
 ]
 
-
 const signMap = [
   [0, 0, 0, -1, -1, -1, 1, 0, 1, 1, -1, -1, 0, -1, 0, -1, -1, 1, 0],
   [0, 0, -1, 0, -1, 1, 1, 1, 0, 1, -1, 0, -1, -1, -1, -1, 1, 1, 0],
@@ -218,6 +217,10 @@ function CheckBox({setter, value, text}) {
 function App() {
   // 棋盘单位尺寸
   const [vertexSize, setVertexSize] = useState(24)
+
+  const [board, setBoard] = useState(new Board(signMap))
+
+  const boardRef = useRef(board)
   // 显示坐标
   const [showCoordinates, setShowCoordinates] = useState(true)
   // 坐标显示切换
@@ -234,10 +237,6 @@ function App() {
   const [showSelection, setShowSelection] = useState(false)
   const [isBusy, setIsBusy] = useState(false)
 
-  const [board, setBoard] = useState(new Board(signMap))
-
-  const boardRef = useRef(board)
-  
   const handleMouseUp = (evt, [x, y]) => {
     let sign = evt.button === 0 ? 1 : -1
     let newBoard = boardRef.current.makeMove(sign, [x, y])
