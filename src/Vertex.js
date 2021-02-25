@@ -27,20 +27,14 @@ function Vertex (props) {
     selectedBottom
   } = props
 
-  let handleMouseUp = evt => {
-    let handler = props.onMouseUp || (() => {})
-    handler(evt, props.position)
-  }
-
   let markerMarkup = z =>
     !!marker && (
       <div className='shudan-marker' title={marker.label} style={absoluteStyle(z)} ></div>
     )
 
   let handlers = {}
-
   for (let e of vertexEvents) {
-    handlers[`handle${e}`] = evt => {
+    handlers[e] = evt => {
       let handler = props[`on${e}`] || (() => {})
       handler(evt, props.position)
     }
@@ -82,7 +76,12 @@ function Vertex (props) {
         )
       }
 
-      onMouseUp={handleMouseUp}
+      onClick={handlers['Click']}
+      onMouseDown={handlers['MouseDown']}
+      onMouseUp={handlers['MouseUp']}
+      onMouseMove={handlers['MouseMove']}
+      onMouseEnter={handlers['MouseEnter']}
+      onMouseLeave={handlers['MouseLeave']}
     >
       {!sign && markerMarkup(0)}
       {!sign && !!ghostStone && (

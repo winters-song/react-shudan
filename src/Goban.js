@@ -160,7 +160,12 @@ function Goban(props, ref) {
                       helper.vertexEquals(v, [x, y + 1])
                     )}
 
+                    onClick={props.onVertexClick}
+                    onMouseDown={props.onVertexMouseDown}
                     onMouseUp={props.onVertexMouseUp}
+                    onMouseMove={props.onVertexMouseMove}
+                    onMouseEnter={props.onVertexMouseEnter}
+                    onMouseLeave={props.onVertexMouseLeave}
                   />
                 )
               })
