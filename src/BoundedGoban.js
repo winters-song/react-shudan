@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, forwardRef} from 'react'
 import Goban from './Goban'
 
-function BoundedGoban(props) {
+function BoundedGoban(props, gobanRef) {
   let {
     showCoordinates,
     maxWidth = 400,
@@ -15,7 +15,7 @@ function BoundedGoban(props) {
   const [vertexSize, setVertexSize] = useState(1)
   const [visibility, setVisibility] = useState('hidden')
 
-  const gobanRef = useRef(null);
+  // const gobanRef = useRef(null);
 
   useEffect(() => {
     let {offsetWidth, offsetHeight} = gobanRef.current
@@ -44,4 +44,4 @@ function BoundedGoban(props) {
   )
 }
 
-export default React.memo(BoundedGoban) 
+export default React.memo(forwardRef(BoundedGoban)) 
